@@ -50,8 +50,6 @@ namespace Backoffice.Controllers
                     });
                 }
 
-                response.
-
                 return Ok(response);
             }       
             catch
