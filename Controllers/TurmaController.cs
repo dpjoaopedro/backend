@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore;
 namespace Backoffice.Controllers
 {
     [ApiController]
-    [Route("v1/escolas")]
-    public class EscolaController : ControllerBase
+    [Route("v1/turmas")]
+    public class TurmaController : ControllerBase
     {
         [HttpGet]
         public async Task<IActionResult> GetAll(
@@ -17,16 +17,16 @@ namespace Backoffice.Controllers
         {
             try
             {
-                var escolas = await context.Escolas.ToListAsync();
+                var turmas = await context.Turmas.ToListAsync();
 
-                if (escolas == null)
+                if (turmas == null)
                     return NotFound();
 
-                return Ok(escolas);
+                return Ok(turmas);
             }
             catch
             {
-                return StatusCode(500, "Não foi resgatar escolas");
+                return StatusCode(500, "Não foi resgatar Turmas");
             }
         }
 
@@ -37,16 +37,16 @@ namespace Backoffice.Controllers
         {
             try
             {
-                var escola = await context.Escolas.FirstOrDefaultAsync(x => x.Id == id);
+                var turma = await context.Turmas.FirstOrDefaultAsync(x => x.Id == id);
 
-                if (escola == null)
+                if (turma == null)
                     return NotFound();
 
-                return Ok(escola);
+                return Ok(turma);
             }
             catch
             {
-                return StatusCode(500, "Não foi possível resgatar escola");
+                return StatusCode(500, "Não foi possível resgatar Turma");
             }
         }
 
@@ -54,7 +54,7 @@ namespace Backoffice.Controllers
         [Route("")]
         public async Task<IActionResult> Create(
                     [FromServices] DataContext context,
-                    [FromBody]Escola model)
+                    [FromBody]Turma model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -62,13 +62,13 @@ namespace Backoffice.Controllers
             try
             {
                 model.Ativo = true;
-                context.Escolas.Add(model);
+                context.Turmas.Add(model);
                 await context.SaveChangesAsync();
                 return Ok(model);
             }
             catch
             {
-                return StatusCode(500, "Não foi possível incluir a escola");
+                return StatusCode(500, "Não foi possível incluir a Turma");
             }
         }
 
@@ -80,20 +80,20 @@ namespace Backoffice.Controllers
         {
             try
             {
-                var escola = await context.Escolas.FirstOrDefaultAsync(x => x.Id == id);
+                Turma turma = await context.Turmas.FirstOrDefaultAsync(x => x.Id == id);
 
-                if (escola == null)
+                if (turma == null)
                     return NotFound();
 
-                escola.Ativo = false;
+                turma.Ativo = false;
 
-                context.Escolas.Update(escola);
+                context.Turmas.Update(turma);
                 await context.SaveChangesAsync();
-                return Ok("escola removida com sucesso!");
+                return Ok("Turma desativada com sucesso!");
             }
             catch
             {
-                return StatusCode(500, "Não foi possível deletar a escola");
+                return StatusCode(500, "Não foi possível deletar a Turma");
             }
         }
 
@@ -101,28 +101,28 @@ namespace Backoffice.Controllers
         [Route("update")]
         public async Task<IActionResult> Update(
                     [FromServices] DataContext context,
-                    [FromBody]Escola model)
+                    [FromBody]Turma model)
         {
             try
             {
-                var escola = await context.Escolas.FirstOrDefaultAsync(x => x.Id == model.Id);
+                var turma = await context.Turmas.FirstOrDefaultAsync(x => x.Id == model.Id);
 
-                escola.Nome = model.Nome;
-                escola.Ativo = model.Ativo;
+                turma.Nome = model.Nome;
+                turma.Ativo = model.Ativo;
 
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-                if (escola == null)
+                if (turma == null)
                     return NotFound();
 
-                context.Escolas.Update(escola);
+                context.Turmas.Update(turma);
                 await context.SaveChangesAsync();
-                return Ok("escola atualizado com sucesso!");
+                return Ok("Turma atualizado com sucesso!");
             }
             catch
             {
-                return StatusCode(500, "Não foi possível deletar o escola");
+                return StatusCode(500, "Não foi possível deletar o Turma");
             }
         }
     }

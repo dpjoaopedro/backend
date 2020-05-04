@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore;
 namespace Backoffice.Controllers
 {
     [ApiController]
-    [Route("v1/escolas")]
-    public class EscolaController : ControllerBase
+    [Route("v1/alunos")]
+    public class AlunoController : ControllerBase
     {
         [HttpGet]
         public async Task<IActionResult> GetAll(
@@ -17,16 +17,16 @@ namespace Backoffice.Controllers
         {
             try
             {
-                var escolas = await context.Escolas.ToListAsync();
+                var alunos = await context.Alunos.ToListAsync();
 
-                if (escolas == null)
+                if (alunos == null)
                     return NotFound();
 
-                return Ok(escolas);
+                return Ok(alunos);
             }
             catch
             {
-                return StatusCode(500, "Não foi resgatar escolas");
+                return StatusCode(500, "Não foi resgatar alunos");
             }
         }
 
@@ -37,16 +37,16 @@ namespace Backoffice.Controllers
         {
             try
             {
-                var escola = await context.Escolas.FirstOrDefaultAsync(x => x.Id == id);
+                var aluno = await context.Alunos.FirstOrDefaultAsync(x => x.Id == id);
 
-                if (escola == null)
+                if (aluno == null)
                     return NotFound();
 
-                return Ok(escola);
+                return Ok(aluno);
             }
             catch
             {
-                return StatusCode(500, "Não foi possível resgatar escola");
+                return StatusCode(500, "Não foi possível resgatar Aluno");
             }
         }
 
@@ -54,7 +54,7 @@ namespace Backoffice.Controllers
         [Route("")]
         public async Task<IActionResult> Create(
                     [FromServices] DataContext context,
-                    [FromBody]Escola model)
+                    [FromBody]Aluno model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -62,13 +62,13 @@ namespace Backoffice.Controllers
             try
             {
                 model.Ativo = true;
-                context.Escolas.Add(model);
+                context.Alunos.Add(model);
                 await context.SaveChangesAsync();
                 return Ok(model);
             }
             catch
             {
-                return StatusCode(500, "Não foi possível incluir a escola");
+                return StatusCode(500, "Não foi possível incluir a Aluno");
             }
         }
 
@@ -80,20 +80,20 @@ namespace Backoffice.Controllers
         {
             try
             {
-                var escola = await context.Escolas.FirstOrDefaultAsync(x => x.Id == id);
+                var aluno = await context.Alunos.FirstOrDefaultAsync(x => x.Id == id);
 
-                if (escola == null)
+                if (aluno == null)
                     return NotFound();
 
-                escola.Ativo = false;
+                aluno.Ativo = false;
 
-                context.Escolas.Update(escola);
+                context.Alunos.Remove(aluno);
                 await context.SaveChangesAsync();
-                return Ok("escola removida com sucesso!");
+                return Ok("Aluno removida com sucesso!");
             }
             catch
             {
-                return StatusCode(500, "Não foi possível deletar a escola");
+                return StatusCode(500, "Não foi possível deletar a Aluno");
             }
         }
 
@@ -101,28 +101,28 @@ namespace Backoffice.Controllers
         [Route("update")]
         public async Task<IActionResult> Update(
                     [FromServices] DataContext context,
-                    [FromBody]Escola model)
+                    [FromBody]Aluno model)
         {
             try
             {
-                var escola = await context.Escolas.FirstOrDefaultAsync(x => x.Id == model.Id);
+                var aluno = await context.Alunos.FirstOrDefaultAsync(x => x.Id == model.Id);
 
-                escola.Nome = model.Nome;
-                escola.Ativo = model.Ativo;
+                aluno.Nome = model.Nome;
+                aluno.Ativo = model.Ativo;
 
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-                if (escola == null)
+                if (aluno == null)
                     return NotFound();
 
-                context.Escolas.Update(escola);
+                context.Alunos.Update(aluno);
                 await context.SaveChangesAsync();
-                return Ok("escola atualizado com sucesso!");
+                return Ok("Aluno atualizado com sucesso!");
             }
             catch
             {
-                return StatusCode(500, "Não foi possível deletar o escola");
+                return StatusCode(500, "Não foi possível deletar o Aluno");
             }
         }
     }
