@@ -6,6 +6,6 @@ namespace Backend.Models
         public string Nome { get; set; }
         public bool Ativo { get; set; }
         public Turma Turma { get; set; }
-        public object TurmaId { get; internal set; }
+        public int TurmaId { get; internal set; }
     }
 }
