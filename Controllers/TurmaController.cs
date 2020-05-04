@@ -17,7 +17,7 @@ namespace Backoffice.Controllers
         {
             try
             {
-                var turmas = await context.Turmas.ToListAsync();
+                var turmas = await context.Turmas.Include(x => x.Alunos).ToListAsync();
 
                 if (turmas == null)
                     return NotFound();
@@ -37,7 +37,7 @@ namespace Backoffice.Controllers
         {
             try
             {
-                var turma = await context.Turmas.FirstOrDefaultAsync(x => x.Id == id);
+                var turma = await context.Turmas.FirstOrDefaultAsync(x => x.TurmaId == id);
 
                 if (turma == null)
                     return NotFound();
@@ -62,6 +62,7 @@ namespace Backoffice.Controllers
             try
             {
                 model.Ativo = true;
+
                 context.Turmas.Add(model);
                 await context.SaveChangesAsync();
                 return Ok(model);
@@ -80,7 +81,7 @@ namespace Backoffice.Controllers
         {
             try
             {
-                Turma turma = await context.Turmas.FirstOrDefaultAsync(x => x.Id == id);
+                Turma turma = await context.Turmas.FirstOrDefaultAsync(x => x.TurmaId == id);
 
                 if (turma == null)
                     return NotFound();
@@ -105,7 +106,7 @@ namespace Backoffice.Controllers
         {
             try
             {
-                var turma = await context.Turmas.FirstOrDefaultAsync(x => x.Id == model.Id);
+                var turma = await context.Turmas.FirstOrDefaultAsync(x => x.TurmaId == model.TurmaId);
 
                 turma.Nome = model.Nome;
                 turma.Ativo = model.Ativo;

@@ -6,6 +6,7 @@ using Backend.Services;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Backoffice.Controllers
 {
@@ -48,7 +49,7 @@ namespace Backoffice.Controllers
         {
             try
             {
-                var user = await context.Usuarios.FirstOrDefaultAsync(x => x.Id == id);
+                var user = await context.Usuarios.FirstOrDefaultAsync(x => x.UsuarioId == id);
 
                 if (user == null)
                     return NotFound();
@@ -95,7 +96,7 @@ namespace Backoffice.Controllers
         {
             try
             {
-                var user = await context.Usuarios.FirstOrDefaultAsync(x => x.Id == id);
+                var user = await context.Usuarios.FirstOrDefaultAsync(x => x.UsuarioId == id);
 
                 if (user == null)
                     return NotFound();
@@ -118,7 +119,7 @@ namespace Backoffice.Controllers
         {
             try
             {
-                var user = await context.Usuarios.FirstOrDefaultAsync(x => x.Id == model.Id);
+                var user = await context.Usuarios.FirstOrDefaultAsync(x => x.UsuarioId == model.UsuarioId);
 
                 user.Nome = model.Nome;
                 user.Ativo = model.Ativo;
@@ -157,7 +158,7 @@ namespace Backoffice.Controllers
                 if (user == null)
                     return StatusCode(404, "Usuário inválido");
 
-                var token = _tokenService.GenerateToken(model);
+                var token = _tokenService.GenerateToken(user);
                 return Ok(new
                 {
                     usuario = user.Nome,
@@ -165,9 +166,9 @@ namespace Backoffice.Controllers
                     token = token
                 });
             }
-            catch
+            catch (Exception e)
             {
-                return StatusCode(500, "Falha na autenticação");
+                return StatusCode(500, "Falha na autenticação " + e.Message);
             }
         }
     }

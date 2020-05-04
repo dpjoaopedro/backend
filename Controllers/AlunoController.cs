@@ -37,7 +37,7 @@ namespace Backoffice.Controllers
         {
             try
             {
-                var aluno = await context.Alunos.FirstOrDefaultAsync(x => x.Id == id);
+                var aluno = await context.Alunos.FirstOrDefaultAsync(x => x.AlunoId == id);
 
                 if (aluno == null)
                     return NotFound();
@@ -80,7 +80,7 @@ namespace Backoffice.Controllers
         {
             try
             {
-                var aluno = await context.Alunos.FirstOrDefaultAsync(x => x.Id == id);
+                var aluno = await context.Alunos.FirstOrDefaultAsync(x => x.AlunoId == id);
 
                 if (aluno == null)
                     return NotFound();
@@ -105,7 +105,7 @@ namespace Backoffice.Controllers
         {
             try
             {
-                var aluno = await context.Alunos.FirstOrDefaultAsync(x => x.Id == model.Id);
+                var aluno = await context.Alunos.FirstOrDefaultAsync(x => x.AlunoId == model.AlunoId);
 
                 aluno.Nome = model.Nome;
                 aluno.Ativo = model.Ativo;

@@ -53,6 +53,10 @@ namespace Backend
 
             services.AddDbContext<DataContext>(x => x.UseInMemoryDatabase("database"));
             services.AddScoped<ITokenService, TokenService>();
+
+            // services.AddControllers().AddNewtonsoftJson(options =>
+            //     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            // );
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
